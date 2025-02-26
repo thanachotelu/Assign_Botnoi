@@ -1,0 +1,16 @@
+# ใช้ Official MongoDB Image
+FROM mongo:6.0
+
+# กำหนด Environment Variables
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=rootpassword
+ENV MONGO_INITDB_DATABASE=mydatabase
+
+# กำหนด Volume สำหรับเก็บข้อมูลถาวร
+VOLUME /data/db
+
+# Expose Port ของ MongoDB
+EXPOSE 27017
+
+# คำสั่งเริ่มต้นเมื่อ Container รัน
+CMD ["mongod"]

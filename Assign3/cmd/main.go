@@ -8,15 +8,15 @@ import (
 
 	"github.com/line/line-bot-sdk-go/v8/linebot"
 
+	"assign3_line_chatbot/internal/config"
 	"assign3_line_chatbot/internal/handler"
 	"assign3_line_chatbot/internal/model"
-	"assign3_line_chatbot/internal/tokenconfig"
 )
 
 var bot *linebot.Client
 
 func main() {
-	cfg := tokenconfig.LoadConfig()
+	cfg := config.LoadConfig()
 
 	bot, err := linebot.New(cfg.ChannelSecret, cfg.ChannelAccessToken)
 	if err != nil {

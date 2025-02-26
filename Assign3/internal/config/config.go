@@ -1,4 +1,4 @@
-package tokenconfig
+package config
 
 import (
 	"log"

@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.Golang
+    container_name: golang_backend
+    restart: unless-stopped
+    environment:
+      - APP_PORT=${APP_PORT}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+    ports:
+      - "${APP_PORT}:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - backend_network
+
+  mongodb:
+    image: mongo:lastest
+    build:
+      context: .
+      dockerfile: Dockerfile.MongoDB
+    container_name: mongo_db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend_network
+
+volumes:
+  mongo_data:
+
+networks:
+  backend_network:
