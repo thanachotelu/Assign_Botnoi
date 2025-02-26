@@ -21,6 +21,8 @@ func PrintStar(x int) {
 }
 
 func main() {
-	x := 5
+	var x int
+	fmt.Print("Enter a number: ")
+	fmt.Scan(&x)
 	PrintStar(x)
 }
