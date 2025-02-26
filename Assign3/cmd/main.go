@@ -46,7 +46,7 @@ func main() {
 					case "quickreply":
 						handler.HandlerQuickReply(bot, event.ReplyToken)
 						return
-					case "carousel":
+					case "carosule":
 						handler.HandlerCarousel(bot, event.ReplyToken)
 						return
 					default:
