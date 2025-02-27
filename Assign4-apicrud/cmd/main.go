@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	"crud/internal/config"
 	service "crud/internal/crud"
 	"crud/internal/handler"
 	"crud/internal/repository"
+	"crud/internal/routes"
 
 	"github.com/gin-gonic/gin"
 
@@ -44,23 +44,7 @@ func main() {
 	userHandlers := handler.NewUserHandlers(userService)
 
 	r := gin.Default()
-
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
-	})
-
-	v1 := r.Group("/api/v1")
-	{
-		users := v1.Group("/users")
-		{
-			users.POST("", userHandlers.AddUser)
-			users.GET("", userHandlers.GetAllUsers)
-			users.GET("/:id", userHandlers.GetUserById)
-			users.PUT("/:id", userHandlers.UpdateUser)
-			users.DELETE("/:id", userHandlers.DeleteUser)
-		}
-
-	}
+	routes.RegisterRoutes(r, userHandlers)
 
 	port := cfg.AppPort
 	if port == "" {
