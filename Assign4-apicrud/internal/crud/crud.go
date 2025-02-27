@@ -9,6 +9,7 @@ import (
 	"crud/internal/model"
 	"crud/internal/repository"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -83,8 +84,39 @@ func (s *UserService) UpdateUser(ctx context.Context, userID string, updatedUser
 	if err != nil {
 		return errors.New("invalid user ID format")
 	}
-	updatedUser.UpdatedAt = time.Now()
-	return s.userRepo.UpdateUser(ctx, objID, updatedUser)
+	updateFields := bson.M{}
+	if updatedUser.Username != "" {
+		updateFields["username"] = updatedUser.Username
+	}
+	if updatedUser.Passwordhash != "" {
+		updateFields["password_hash"] = updatedUser.Passwordhash
+	}
+	if updatedUser.Firstname != "" {
+		updateFields["firstname"] = updatedUser.Firstname
+	}
+	if updatedUser.Lastname != "" {
+		updateFields["lastname"] = updatedUser.Lastname
+	}
+	if updatedUser.Phonenumber != "" {
+		updateFields["phonenumber"] = updatedUser.Phonenumber
+	}
+	if updatedUser.Email != "" {
+		updateFields["email"] = updatedUser.Email
+	}
+	if updatedUser.Role != "" {
+		updateFields["role"] = updatedUser.Role
+	}
+	if updatedUser.Status != "" {
+		updateFields["status"] = updatedUser.Status
+	}
+
+	updateFields["updated_at"] = time.Now()
+
+	if len(updateFields) == 0 {
+		return errors.New("no valid fields to update")
+	}
+
+	return s.userRepo.UpdateUser(ctx, objID, updateFields)
 }
 
 // DeleteUser ลบผู้ใช้

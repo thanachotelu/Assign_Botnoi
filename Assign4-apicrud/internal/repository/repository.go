@@ -77,7 +77,7 @@ func (r *UserRepository) GetUserById(ctx context.Context, userID primitive.Objec
 }
 
 // UpdateUser อัปเดตข้อมูลผู้ใช้
-func (r *UserRepository) UpdateUser(ctx context.Context, userID primitive.ObjectID, updatedUser model.User) error {
+func (r *UserRepository) UpdateUser(ctx context.Context, userID primitive.ObjectID, updatedUser bson.M) error {
 	filter := bson.M{"_id": userID}
 	update := bson.M{"$set": updatedUser}
 
